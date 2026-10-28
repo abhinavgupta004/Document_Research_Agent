@@ -2,6 +2,8 @@
 
 **Built by Abhinav Gupta**
 
+Live link: https://documentresearchagent-f55ub27cmnj9xczwrkfl2m.streamlit.app/
+
 Upload a few papers, a company report, some technical docs. Ask *"Compare the approaches used in these papers."* Get an answer where every claim points back to a **file and page number**.
 
 It's a multi-document RAG system built as a **LangGraph** agent that checks its own work: it grades what it retrieved, rewrites searches that miss, fact-checks its draft, and says "I couldn't find this" when the documents don't back an answer.
