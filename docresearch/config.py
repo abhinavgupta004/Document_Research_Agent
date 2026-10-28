@@ -7,20 +7,33 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def _get(name: str, default: str = "") -> str:
+    """Read from environment (.env locally), then Streamlit secrets (when deployed)."""
+    value = os.getenv(name)
+    if value:
+        return value
+    try:
+        import streamlit as st
+
+        return str(st.secrets[name])
+    except Exception:
+        return default
+
+
 @dataclass(frozen=True)
 class Settings:
     # --- LLM (anything OpenAI-compatible: OpenAI, Groq, Ollama, LM Studio...) ---
-    llm_model: str = os.getenv("LLM_MODEL", "gpt-4o-mini")
-    llm_base_url: str | None = os.getenv("LLM_BASE_URL") or None
-    llm_api_key: str = os.getenv("LLM_API_KEY") or os.getenv("OPENAI_API_KEY", "")
+    llm_model: str = _get("LLM_MODEL", "gpt-4o-mini")
+    llm_base_url: str | None = _get("LLM_BASE_URL") or None
+    llm_api_key: str = _get("LLM_API_KEY") or _get("OPENAI_API_KEY")
 
     # --- Embeddings run locally, so indexing costs nothing ---
-    embedding_model: str = os.getenv(
+    embedding_model: str = _get(
         "EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"
     )
 
     # --- Vector DB ---
-    chroma_dir: str = os.getenv("CHROMA_DIR", "./.chroma")
+    chroma_dir: str = _get("CHROMA_DIR", "./.chroma")
     collection: str = "research_docs"
 
     # --- Chunking ---
@@ -28,13 +41,13 @@ class Settings:
     chunk_overlap: int = 150
 
     # --- Retrieval ---
-    top_k: int = 6          # passages per query for normal questions
-    per_doc_k: int = 3      # passages per document for comparisons
-    max_passages: int = 12  # hard cap going into the LLM
+    top_k: int = 6
+    per_doc_k: int = 3
+    max_passages: int = 12
 
     # --- Agent behaviour ---
-    max_rewrites: int = 2   # how many times we'll rephrase a failing search
-    max_revisions: int = 1  # how many times we'll redo an answer that fails verification
+    max_rewrites: int = 2
+    max_revisions: int = 1
 
 
 settings = Settings()
