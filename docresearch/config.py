@@ -8,7 +8,7 @@ load_dotenv()
 
 
 def _get(name: str, default: str = "") -> str:
-    """Read from environment (.env locally), then Streamlit secrets (when deployed)."""
+    """Read from the environment (.env locally), then Streamlit secrets (when deployed)."""
     value = os.getenv(name)
     if value:
         return value
@@ -36,18 +36,21 @@ class Settings:
     chroma_dir: str = _get("CHROMA_DIR", "./.chroma")
     collection: str = "research_docs"
 
+    # --- Public demo: no uploads, sample documents only ---
+    demo_mode: bool = _get("DEMO_MODE").lower() in {"1", "true", "yes"}
+
     # --- Chunking ---
     chunk_size: int = 1000
     chunk_overlap: int = 150
 
     # --- Retrieval ---
-    top_k: int = 6
-    per_doc_k: int = 3
-    max_passages: int = 12
+    top_k: int = 6          # passages per query for normal questions
+    per_doc_k: int = 3      # passages per document for comparisons
+    max_passages: int = 12  # hard cap going into the LLM
 
     # --- Agent behaviour ---
-    max_rewrites: int = 2
-    max_revisions: int = 1
+    max_rewrites: int = 2   # how many times we'll rephrase a failing search
+    max_revisions: int = 1  # how many times we'll redo an answer that fails verification
 
 
 settings = Settings()

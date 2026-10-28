@@ -22,6 +22,22 @@ EXAMPLES = [
 def sidebar() -> list[str]:
     st.sidebar.header("📂 Your library")
 
+    if settings.demo_mode:
+        sample_dir = Path(__file__).parent / "sample_docs"
+        if not list_sources() and sample_dir.exists():
+            with st.spinner("Loading the sample documents..."):
+                for f in sorted(sample_dir.glob("*.md")):
+                    ingest_file(f)
+            st.rerun()
+        st.sidebar.info(
+            "Public demo: uploads are turned off. Clone the repo to use your own documents."
+        )
+        for name in list_sources():
+            st.sidebar.write(f"📄 {name}")
+        st.sidebar.divider()
+        st.sidebar.caption(f"Model: `{settings.llm_model}`")
+        return list_sources()
+
     uploads = st.sidebar.file_uploader(
         "Add documents",
         type=[e.lstrip(".") for e in sorted(SUPPORTED)],

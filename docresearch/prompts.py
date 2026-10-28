@@ -61,7 +61,7 @@ GENERATOR = ChatPromptTemplate.from_messages(
             "sources below.\n\n"
             "Rules:\n"
             "1. Cite every factual claim with its source tag, like [S1]. One tag per "
-            "bracket: write [S1] [S3], never [S1, S3].\n"
+            "bracket: write [S1] [S3], never [S1, S3]. In a table, put the tag in every cell that states a fact.\n"
             "2. If the sources don't cover part of the question, say so plainly instead "
             "of filling the gap from general knowledge.\n"
             "3. If sources disagree, point out the disagreement rather than smoothing it over.\n"

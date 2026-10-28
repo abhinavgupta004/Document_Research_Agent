@@ -10,6 +10,7 @@ Every node appends a plain-English line to `trace`, which the UI streams live.
 That trace is the "show your work" part of the project.
 """
 import operator
+import re
 from functools import lru_cache
 from typing import Annotated, Iterator, TypedDict
 
@@ -227,6 +228,7 @@ def use_partial(state: ResearchState) -> dict:
 
 def finalize(state: ResearchState) -> dict:
     text, used = link_citations(state["draft"], state["passages"])
+    text = re.sub(r"<br\s*/?>", "; ", text)  # models sometimes emit HTML line breaks in tables
     by_id = {p["id"]: p for p in state["passages"]}
     # If the model cited nothing, show everything we gave it rather than hide the evidence.
     sources = [by_id[i] for i in used] if used else state["passages"]
