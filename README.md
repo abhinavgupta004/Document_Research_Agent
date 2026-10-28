@@ -8,8 +8,8 @@ Upload a few papers, a company report, some technical docs. Ask *"Compare the ap
 
 It's a multi-document RAG system built as a **LangGraph** agent that checks its own work: it grades what it retrieved, rewrites searches that miss, fact-checks its draft, and says "I couldn't find this" when the documents don't back an answer.
 
-![Answer with citations](docs/answer.png)
-![How I got here](docs/trace.png)
+   ![Answer with citations](answer.png)
+   ![How I got here](trace.png)
 
 ## How it works
 
