@@ -1,4 +1,4 @@
-langgraph>=0.2
+--extra-index-url https://download.pytorch.org/whl/cpulanggraph>=0.2
 langchain-core>=0.3
 langchain-openai>=0.2
 langchain-chroma>=0.1.4
@@ -11,4 +11,5 @@ python-docx>=1.1
 streamlit>=1.38
 python-dotenv>=1.0
 pydantic>=2.7
-pytest>=8.0
+
+
